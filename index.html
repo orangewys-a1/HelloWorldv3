@@ -154,7 +154,7 @@
       border-radius: 8px;
     }
 
-    /* 웹앱 게시판 리스트 */
+    /* 게시물 리스트 */
     .post-list {
       display: grid;
       grid-template-columns: 1fr;
@@ -285,14 +285,15 @@
       </div>
     </section>
 
-    <!-- 개발 웹앱 게시판 섹션 -->
+    <!-- 게시물 섹션 -->
     <section aria-label="개발 웹앱 게시판">
       <div class="section-head">
         <h2>개발 웹앱 아카이브</h2>
-        <span>1개 게시물</span>
+        <span id="postCount">3개 게시물</span>
       </div>
 
       <div class="post-list">
+        <!-- 1. 웹앱 게시물 -->
         <article class="post-card">
           <div class="post-main">
             <div class="post-meta">
@@ -308,8 +309,50 @@
           </div>
           <a class="post-action" href="./qr/">앱 열기 →</a>
         </article>
+
+        <!-- 2. 웹사이트 링크 게시물 -->
+        <article class="post-card">
+          <div class="post-main">
+            <div class="post-meta">
+              <span class="post-category">웹사이트</span>
+              <span>횡성문화관광</span>
+            </div>
+            <h3 class="post-title">
+              <a href="https://www.hsg.go.kr/tour/index.do" target="_blank" rel="noopener noreferrer">횡성문화관광 공식 웹사이트</a>
+            </h3>
+            <p class="post-desc">
+              횡성군 주요 여행지와 축제, 체험 정보 및 관광 안내를 확인할 수 있는 공식 웹사이트입니다.
+            </p>
+          </div>
+          <a class="post-action" href="https://www.hsg.go.kr/tour/index.do" target="_blank" rel="noopener noreferrer">바로가기 →</a>
+        </article>
+
+        <!-- 3. 유튜브 채널 게시물 (URL 및 채널명 수정해서 사용) -->
+        <article class="post-card">
+          <div class="post-main">
+            <div class="post-meta">
+              <span class="post-category">유튜브</span>
+              <span>채널 링크</span>
+            </div>
+            <h3 class="post-title">
+              <a href="https://www.youtube.com/@여기에채널핸들입력" target="_blank" rel="noopener noreferrer">강사 유튜브 채널</a>
+            </h3>
+            <p class="post-desc">
+              SW·AI 교육, 실습 튜토리얼 및 프로젝트 기록 영상을 모은 유튜브 채널입니다.
+            </p>
+          </div>
+          <a class="post-action" href="https://www.youtube.com/@여기에채널핸들입력" target="_blank" rel="noopener noreferrer">채널 보기 →</a>
+        </article>
       </div>
     </section>
   </div>
+
+  <script>
+    const postCountEl = document.getElementById('postCount');
+    const postCards = document.querySelectorAll('.post-list .post-card');
+    if (postCountEl) {
+      postCountEl.textContent = `${postCards.length}개 게시물`;
+    }
+  </script>
 </body>
 </html>
