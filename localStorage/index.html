@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>횡성 먹거리·체험 수요 조사</title>
+  <style>
+    :root {
+      --bg: #f4f6f9;
+      --surface: #ffffff;
+      --border: #e2e8f0;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --primary-light: #eff6ff;
+      --accent: #0d9488;
+      --accent-light: #f0fdfa;
+      --danger: #ef4444;
+      --radius: 16px;
+      --shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Malgun Gothic", sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 28px 16px 64px;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .hero {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--primary);
+      background: var(--primary-light);
+      padding: 3px 10px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+    }
+
+    .hero h1 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      background: var(--surface);
+      padding: 6px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+    }
+
+    .tab-btn {
+      border: none;
+      background: transparent;
+      padding: 11px 14px;
+      border-radius: 11px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      color: #ffffff;
+    }
+
+    .panel {
+      display: none;
+    }
+
+    .panel.active {
+      display: block;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px 24px;
+      box-shadow: var(--shadow);
+      margin-bottom: 18px;
+    }
+
+    .card-title {
+      font-size: 1.08rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .card-sub {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    @media (max-width: 640px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    label.field-label {
+      display: block;
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    select,
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 0.94rem;
+      color: var(--text);
+      background: #ffffff;
+    }
+
+    select:focus,
+    input[type="text"]:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    textarea {
+      min-height: 82px;
+      resize: vertical;
+    }
+
+    .chip-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .choice-chip {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .choice-chip input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .choice-chip span {
+      display: inline-block;
+      padding: 8px 13px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #f8fafc;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text);
+      transition: all 0.15s ease;
+    }
+
+    .choice-chip input:checked + span {
+      background: var(--primary-light);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .choice-chip.exp input:checked + span {
+      background: var(--accent-light);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 11px 16px;
+      border-radius: 10px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-secondary {
+      background: #f1f5f9;
+      color: var(--text);
+      border-color: var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: #e2e8f0;
+    }
+
+    .btn-danger-outline {
+      background: #ffffff;
+      color: var(--danger);
+      border-color: #fecaca;
+    }
+
+    .btn-danger-outline:hover {
+      background: #fef2f2;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    @media (max-width: 600px) {
+      .stats-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .stat-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .stat-value {
+      font-size: 1.35rem;
+      font-weight: 800;
+      margin-top: 2px;
+    }
+
+    .bar-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .bar-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .bar-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    .bar-track {
+      height: 10px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      background: var(--primary);
+      border-radius: 999px;
+      transition: width 0.25s ease;
+    }
+
+    .bar-fill.exp {
+      background: var(--accent);
+    }
+
+    .response-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .response-item {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      background: #ffffff;
+    }
+
+    .response-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .response-picks {
+      font-size: 0.9rem;
+      margin-bottom: 4px;
+    }
+
+    .response-note {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .empty-msg {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      padding: 20px 0;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(16px);
+      background: #0f172a;
+      color: #ffffff;
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.2s ease;
+      z-index: 1000;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero">
+      <span class="badge">횡성 방문 수요 조사</span>
+      <h1>횡성에서 먹고·경험하고 싶은 것</h1>
+      <p>횡성 방문 시 선호하는 먹거리와 체험 활동을 선택해 주세요. 응답은 이 브라우저에 실시간 집계됩니다.</p>
+    </header>
+
+    <div class="tabs" role="tablist">
+      <button type="button" class="tab-btn active" data-tab="surveyPanel">수요 조사 참여</button>
+      <button type="button" class="tab-btn" data-tab="resultPanel">집계 현황 보기 (<span id="tabCount">0</span>)</button>
+    </div>
+
+    <!-- 1. 설문 입력 패널 -->
+    <section id="surveyPanel" class="panel active">
+      <form id="surveyForm">
+        <div class="card">
+          <div class="card-title">1. 방문 정보</div>
+          <div class="grid-2">
+            <div>
+              <label class="field-label" for="companionType">동행 유형</label>
+              <select id="companionType">
+                <option value="혼자 여행">혼자 여행</option>
+                <option value="연인·친구" selected>연인·친구</option>
+                <option value="가족·아이 동반">가족·아이 동반</option>
+                <option value="단체·워크숍·수업">단체·워크숍·수업</option>
+              </select>
+            </div>
+            <div>
+              <label class="field-label" for="visitSeason">선호 방문 시기</label>
+              <select id="visitSeason">
+                <option value="봄 (3~5월)">봄 (3~5월)</option>
+                <option value="여름 (6~8월)">여름 (6~8월)</option>
+                <option value="가을 (9~11월)" selected>가을 (9~11월)</option>
+                <option value="겨울 (12~2월)">겨울 (12~2월)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">2. 먹고 싶은 횡성 먹거리 (복수 선택 가능)</div>
+          <p class="card-sub">관심 있는 먹거리를 모두 골라 주세요.</p>
+          <div class="chip-grid" id="foodChips">
+            <label class="choice-chip"><input type="checkbox" name="food" value="횡성한우 구이·육회" /><span>횡성한우 구이·육회</span></label>
+            <label class="choice-chip"><input type="checkbox" name="food" value="안흥찐빵" /><span>안흥찐빵</span></label>
+            <label class="choice-chip"><input type="checkbox" name="food" value="메밀막국수·전병" /><span>메밀막국수·전병</span></label>
+            <label class="choice-chip"><input type="checkbox" name="food" value="더덕·산나물 밥상" /><span>더덕·산나물 밥상</span></label>
+            <label class="choice-chip"><input type="checkbox" name="food" value="지역 카페·로컬 디저트" /><span>지역 카페·로컬 디저트</span></label>
+            <label class="choice-chip"><input type="checkbox" name="food" value="전통시장 길거리 음식" /><span>전통시장 길거리 음식</span></label>
+          </div>
+          <label class="field-label" for="foodCustom">기타 먹고 싶은 메뉴</label>
+          <input type="text" id="foodCustom" placeholder="예: 한우 국밥, 로컬 양조장 시음, 수제 빵집 등" />
+        </div>
+
+        <div class="card">
+          <div class="card-title">3. 경험하고 싶은 횡성 활동 (복수 선택 가능)</div>
+          <p class="card-sub">즐겨보고 싶은 체험이나 코스 형태를 선택해 주세요.</p>
+          <div class="chip-grid" id="expChips">
+            <label class="choice-chip exp"><input type="checkbox" name="exp" value="호수·숲길 산책 및 드라이브" /><span>호수·숲길 산책 및 드라이브</span></label>
+            <label class="choice-chip exp"><input type="checkbox" name="exp" value="농촌·목장·원데이 체험" /><span>농촌·목장·원데이 체험</span></label>
+            <label class="choice-chip exp"><input type="checkbox" name="exp" value="캠핑·차박·자연 휴식" /><span>캠핑·차박·자연 휴식</span></label>
+            <label class="choice-chip exp"><input type="checkbox" name="exp" value="지역 축제·전통시장 투어" /><span>지역 축제·전통시장 투어</span></label>
+            <label class="choice-chip exp"><input type="checkbox" name="exp" value="스파·온천·웰니스 힐링" /><span>스파·온천·웰니스 힐링</span></label>
+            <label class="choice-chip exp"><input type="checkbox" name="exp" value="사진 명소·감성 코스 탐방" /><span>사진 명소·감성 코스 탐방</span></label>
+          </div>
+          <label class="field-label" for="expCustom">기타 원하는 체험·코스</label>
+          <input type="text" id="expCustom" placeholder="예: 가족 피크닉 장소, 반려동물 동반 코스, 야경 스팟 등" />
+        </div>
+
+        <div class="card">
+          <div class="card-title">4. 기대 예산 및 추가 의견</div>
+          <div class="grid-2" style="margin-bottom: 12px;">
+            <div>
+              <label class="field-label" for="budgetRange">1인 당일 기준 기대 식비·체험비</label>
+              <select id="budgetRange">
+                <option value="3만 원 이하">3만 원 이하</option>
+                <option value="3만~6만 원" selected>3만~6만 원</option>
+                <option value="6만~10만 원">6만~10만 원</option>
+                <option value="10만 원 이상">10만 원 이상</option>
+              </select>
+            </div>
+            <div>
+              <label class="field-label" for="respondentRole">응답자 구분 (선택)</label>
+              <input type="text" id="respondentRole" placeholder="예: 관광객, 지역 주민, 교육 참가자" />
+            </div>
+          </div>
+          <label class="field-label" for="memoText">남기고 싶은 한 줄 의견 (선택)</label>
+          <textarea id="memoText" placeholder="추천받고 싶은 코스나 불편했던 점, 아이디어가 있다면 편하게 적어주세요."></textarea>
+
+          <div class="btn-row" style="margin-top: 16px;">
+            <button type="submit" class="btn btn-primary">수요 조사 제출하기</button>
+            <button type="button" id="fillSampleBtn" class="btn btn-secondary">샘플 응답 채우기</button>
+          </div>
+        </div>
+      </form>
+    </section>
+
+    <!-- 2. 집계 현황 패널 -->
+    <section id="resultPanel" class="panel">
+      <div class="card">
+        <div class="card-title">
+          <span>응답 요약 및 내보내기</span>
+          <div class="btn-row" style="margin-top: 0;">
+            <button type="button" id="copySummaryBtn" class="btn btn-secondary">요약 복사</button>
+            <button type="button" id="exportCsvBtn" class="btn btn-secondary">CSV 다운로드</button>
+            <button type="button" id="resetDataBtn" class="btn btn-danger-outline">기록 초기화</button>
+          </div>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat-box">
+            <div class="stat-label">총 응답 수</div>
+            <div class="stat-value" id="totalCount">0건</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">1위 먹거리</div>
+            <div class="stat-value" id="topFood" style="font-size: 1.05rem;">-</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">1위 체험 활동</div>
+            <div class="stat-value" id="topExp" style="font-size: 1.05rem;">-</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">먹거리 선호도</div>
+          <div id="foodBars" class="bar-list"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">경험 활동 선호도</div>
+          <div id="expBars" class="bar-list"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">최근 개별 응답 (<span id="listCount">0</span>)</div>
+        <div id="responseList" class="response-list"></div>
+      </div>
+    </section>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    const STORAGE_KEY = 'hoengseong_demand_survey_v1';
+
+    const FOOD_OPTIONS = [
+      '횡성한우 구이·육회',
+      '안흥찐빵',
+      '메밀막국수·전병',
+      '더덕·산나물 밥상',
+      '지역 카페·로컬 디저트',
+      '전통시장 길거리 음식'
+    ];
+
+    const EXP_OPTIONS = [
+      '호수·숲길 산책 및 드라이브',
+      '농촌·목장·원데이 체험',
+      '캠핑·차박·자연 휴식',
+      '지역 축제·전통시장 투어',
+      '스파·온천·웰니스 힐링',
+      '사진 명소·감성 코스 탐방'
+    ];
+
+    const toastEl = document.getElementById('toast');
+    let toastTimer = null;
+
+    function showToast(msg) {
+      toastEl.textContent = msg;
+      toastEl.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2200);
+    }
+
+    function loadResponses() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+      } catch (_) {
+        return [];
+      }
+    }
+
+    function saveResponses(items) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    }
+
+    // 탭 전환
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = btn.dataset.tab;
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b === btn));
+        document.querySelectorAll('.panel').forEach(p => p.classList.toggle('active', p.id === target));
+        if (target === 'resultPanel') {
+          renderResults();
+        }
+      });
+    });
+
+    // 샘플 채우기
+    document.getElementById('fillSampleBtn').addEventListener('click', () => {
+      document.getElementById('companionType').value = '가족·아이 동반';
+      document.getElementById('visitSeason').value = '가을 (9~11월)';
+      document.getElementById('budgetRange').value = '6만~10만 원';
+      document.getElementById('respondentRole').value = '주말 나들이 방문객';
+      document.getElementById('foodCustom').value = '한우 떡갈비';
+      document.getElementById('expCustom').value = '아이와 함께 갈 수 있는 체험 공간';
+      document.getElementById('memoText').value = '주차가 편하고 대기 시간이 짧은 맛집·체험 코스 안내가 있으면 좋겠어요.';
+
+      document.querySelectorAll('input[name="food"]').forEach(cb => {
+        cb.checked = ['횡성한우 구이·육회', '안흥찐빵'].includes(cb.value);
+      });
+      document.querySelectorAll('input[name="exp"]').forEach(cb => {
+        cb.checked = ['호수·숲길 산책 및 드라이브', '농촌·목장·원데이 체험'].includes(cb.value);
+      });
+      showToast('샘플 응답이 입력되었습니다.');
+    });
+
+    // 폼 제출
+    document.getElementById('surveyForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const selectedFoods = Array.from(document.querySelectorAll('input[name="food"]:checked')).map(cb => cb.value);
+      const foodCustom = document.getElementById('foodCustom').value.trim();
+      if (foodCustom) selectedFoods.push(`기타: ${foodCustom}`);
+
+      const selectedExps = Array.from(document.querySelectorAll('input[name="exp"]:checked')).map(cb => cb.value);
+      const expCustom = document.getElementById('expCustom').value.trim();
+      if (expCustom) selectedExps.push(`기타: ${expCustom}`);
+
+      if (selectedFoods.length === 0 && selectedExps.length === 0) {
+        showToast('먹거리 또는 경험 활동 중 최소 1개 이상 선택해 주세요.');
+        return;
+      }
+
+      const entry = {
+        id: Date.now(),
+        createdAt: new Date().toLocaleString('ko-KR', {
+          month: 'short',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        }),
+        companion: document.getElementById('companionType').value,
+        season: document.getElementById('visitSeason').value,
+        budget: document.getElementById('budgetRange').value,
+        role: document.getElementById('respondentRole').value.trim(),
+        foods: selectedFoods,
+        exps: selectedExps,
+        memo: document.getElementById('memoText').value.trim()
+      };
+
+      const items = loadResponses();
+      items.unshift(entry);
+      saveResponses(items);
+
+      e.target.reset();
+      updateBadges();
+      showToast('수요 조사가 저장되었습니다! 집계 탭에서 확인해 보세요.');
+    });
+
+    function countByCategory(items, key, baseOptions) {
+      const counts = {};
+      baseOptions.forEach(opt => { counts[opt] = 0; });
+
+      items.forEach(item => {
+        (item[key] || []).forEach(val => {
+          counts[val] = (counts[val] || 0) + 1;
+        });
+      });
+
+      return Object.entries(counts)
+        .filter(([label, count]) => baseOptions.includes(label) || count > 0)
+        .sort((a, b) => b[1] - a[1]);
+    }
+
+    function renderBarList(containerId, entries, total, extraClass = '') {
+      const el = document.getElementById(containerId);
+      if (total === 0) {
+        el.innerHTML = '<div class="empty-msg">아직 집계된 응답이 없습니다.</div>';
+        return;
+      }
+
+      el.innerHTML = entries.map(([label, count]) => {
+        const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+        return `
+          <div class="bar-item">
+            <div class="bar-header">
+              <span>${escapeHtml(label)}</span>
+              <span>${count}표 (${pct}%)</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill ${extraClass}" style="width: ${pct}%"></div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function updateBadges() {
+      const count = loadResponses().length;
+      document.getElementById('tabCount').textContent = count;
+      document.getElementById('listCount').textContent = count;
+    }
+
+    function renderResults() {
+      const items = loadResponses();
+      const total = items.length;
+      updateBadges();
+
+      document.getElementById('totalCount').textContent = `${total}건`;
+
+      const foodEntries = countByCategory(items, 'foods', FOOD_OPTIONS);
+      const expEntries = countByCategory(items, 'exps', EXP_OPTIONS);
+
+      document.getElementById('topFood').textContent =
+        total > 0 && foodEntries[0] && foodEntries[0][1] > 0 ? foodEntries[0][0] : '-';
+      document.getElementById('topExp').textContent =
+        total > 0 && expEntries[0] && expEntries[0][1] > 0 ? expEntries[0][0] : '-';
+
+      renderBarList('foodBars', foodEntries, total, '');
+      renderBarList('expBars', expEntries, total, 'exp');
+
+      const listEl = document.getElementById('responseList');
+      if (total === 0) {
+        listEl.innerHTML = '<div class="empty-msg">첫 번째 수요 조사 응답을 등록해 보세요.</div>';
+        return;
+      }
+
+      listEl.innerHTML = items.map(item => `
+        <div class="response-item">
+          <div class="response-meta">
+            <span><strong>${escapeHtml(item.companion)}</strong> · ${escapeHtml(item.season)} · ${escapeHtml(item.budget)}${item.role ? ` · ${escapeHtml(item.role)}` : ''}</span>
+            <span>${escapeHtml(item.createdAt)}</span>
+          </div>
+          ${item.foods.length ? `<div class="response-picks"><strong>먹거리:</strong> ${escapeHtml(item.foods.join(', '))}</div>` : ''}
+          ${item.exps.length ? `<div class="response-picks"><strong>경험:</strong> ${escapeHtml(item.exps.join(', '))}</div>` : ''}
+          ${item.memo ? `<div class="response-note">의견: ${escapeHtml(item.memo)}</div>` : ''}
+        </div>
+      `).join('');
+    }
+
+    // 요약 복사
+    document.getElementById('copySummaryBtn').addEventListener('click', async () => {
+      const items = loadResponses();
+      if (items.length === 0) {
+        showToast('복사할 집계 데이터가 없습니다.');
+        return;
+      }
+      const foodEntries = countByCategory(items, 'foods', FOOD_OPTIONS).slice(0, 3);
+      const expEntries = countByCategory(items, 'exps', EXP_OPTIONS).slice(0, 3);
+
+      const summary = [
+        `[횡성 먹거리·체험 수요 조사 요약] 총 ${items.length}건`,
+        `- 상위 먹거리: ${foodEntries.map(([k, v]) => `${k}(${v})`).join(', ') || '없음'}`,
+        `- 상위 체험: ${expEntries.map(([k, v]) => `${k}(${v})`).join(', ') || '없음'}`
+      ].join('\n');
+
+      try {
+        await navigator.clipboard.writeText(summary);
+        showToast('요약 결과가 클립보드에 복사되었습니다.');
+      } catch (_) {
+        showToast('복사에 실패했습니다.');
+      }
+    });
+
+    // CSV 다운로드
+    document.getElementById('exportCsvBtn').addEventListener('click', () => {
+      const items = loadResponses();
+      if (items.length === 0) {
+        showToast('내보낼 응답 데이터가 없습니다.');
+        return;
+      }
+      const headers = ['일시', '동행유형', '방문시기', '예산', '응답자구분', '먹거리', '경험활동', '의견'];
+      const rows = items.map(r => [
+        r.createdAt,
+        r.companion,
+        r.season,
+        r.budget,
+        r.role,
+        (r.foods || []).join(' | '),
+        (r.exps || []).join(' | '),
+        r.memo
+      ]);
+
+      const csvContent = '\uFEFF' + [headers, ...rows]
+        .map(row => row.map(cell => `"${String(cell || '').replace(/"/g, '""')}"`).join(','))
+        .join('\n');
+
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `hoengseong_survey_${new Date().toISOString().slice(0, 10)}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('CSV 파일이 다운로드되었습니다.');
+    });
+
+    // 초기화
+    document.getElementById('resetDataBtn').addEventListener('click', () => {
+      if (!confirm('저장된 모든 수요 조사 응답을 삭제할까요?')) return;
+      localStorage.removeItem(STORAGE_KEY);
+      renderResults();
+      showToast('응답 기록이 초기화되었습니다.');
+    });
+
+    updateBadges();
+  </script>
+</body>
+</html>
